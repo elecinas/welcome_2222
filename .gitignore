@@ -1,0 +1,10 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Carpetas de editores
+.vscode/
+.idea/
+
+# Opcional: Si tus imágenes pesan mucho, podrías ignorarlas, 
+# pero para un cómic interactivo es normal subirlas al repo.

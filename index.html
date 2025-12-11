@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Barcelona Fake — Cómic Interactivo</title>
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* -----------------------------------------------------------
+           1. CONFIGURACIÓN GENERAL Y VARIABLES (DARK MODE)
+        ----------------------------------------------------------- */
+      :root {
+        /* Paleta Oscura "Arcane" */
+        --color-bg: #101014; /* Negro casi puro */
+        --color-panel-bg: #1c1c24; /* Gris muy oscuro para placeholders */
+        --color-gold: #c8aa6e; /* Dorado un poco más apagado y elegante */
+        --color-text-main: #e0e0e0; /* Blanco roto para lectura cómoda */
+        --color-text-muted: #a0a0a0;
+
+        /* Tipografía única: Palo seco */
+        --font-main: "Inter", sans-serif;
+
+        --panel-width: 1080px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--color-bg);
+        color: var(--color-text-main);
+        font-family: var(--font-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* -----------------------------------------------------------
+           2. CABECERA (HEADER) - Estilo Dark Tech
+        ----------------------------------------------------------- */
+      header {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        height: 100px;
+        background-color: rgba(
+          16,
+          16,
+          20,
+          0.9
+        ); /* Fondo oscuro semitransparente */
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        border-bottom: 1px solid rgba(200, 170, 110, 0.3); /* Línea dorada sutil */
+      }
+
+      header h1 {
+        font-family: var(--font-main);
+        color: var(--color-text-main);
+        font-size: 1.5rem;
+        font-weight: 300; /* Letra fina para elegancia minimalista */
+        letter-spacing: 4px; /* Espaciado amplio estilo cinematográfico */
+        text-transform: uppercase;
+      }
+
+      /* -----------------------------------------------------------
+           3. CONTENEDOR PRINCIPAL
+        ----------------------------------------------------------- */
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px 80px 20px;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      /* -----------------------------------------------------------
+           4. ESTILOS DE VIÑETAS (.comic-panel)
+        ----------------------------------------------------------- */
+      .comic-panel {
+        width: var(--panel-width);
+        height: auto;
+        aspect-ratio: 1080 / 1920;
+        max-width: 100%;
+
+        display: block;
+        margin: 0 auto;
+        object-fit: cover;
+        border-radius: 8px;
+
+        /* Sombra oscura para integrarse en el fondo negro */
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.05); /* Borde casi invisible */
+        background-color: var(--color-panel-bg); /* Color mientras carga */
+
+        /* Animación inicial */
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+
+      .comic-panel.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* -----------------------------------------------------------
+           5. BLOQUE DE DECISIÓN
+        ----------------------------------------------------------- */
+      .decision-block {
+        width: var(--panel-width);
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin-top: 20px;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+
+      .decision-block.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .decision-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+      }
+
+      .btn-decision {
+        font-family: var(--font-main);
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 25px 40px;
+        width: 100%;
+
+        /* Estilo Dark Mode */
+        background-color: transparent;
+        color: var(--color-gold);
+        border: 1px solid var(--color-gold);
+
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Efecto Hover: Relleno dorado */
+      .btn-decision:hover {
+        background-color: var(--color-gold);
+        color: var(--color-bg); /* Texto se vuelve negro */
+        box-shadow: 0 0 25px rgba(200, 170, 110, 0.3);
+        transform: scale(1.01);
+        border-color: var(--color-gold);
+      }
+
+      /* Ajuste para móviles */
+      @media (max-width: 768px) {
+        header h1 {
+          font-size: 1rem;
+          letter-spacing: 2px;
+        }
+        .btn-decision {
+          padding: 20px;
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Barcelona Fake — Cómic Interactivo</h1>
+    </header>
+
+    <main>
+      <img src="images/001.jpg" class="comic-panel" alt="Página 1" />
+      <img src="images/002.jpg" class="comic-panel" alt="Página 2" />
+      <img src="images/003.jpg" class="comic-panel" alt="Página 3" />
+      <img src="images/004.jpg" class="comic-panel" alt="Página 3" />
+      <img src="images/005.jpg" class="comic-panel" alt="Página 3" />
+      <img src="images/006.jpg" class="comic-panel" alt="Página 3" />
+      <img src="images/007.jpg" class="comic-panel" alt="Página 3" />
+      <img src="images/008.jpg" class="comic-panel" alt="Página 3" />
+      <img src="images/009.jpg" class="comic-panel" alt="Página 3" />
+
+      <div class="decision-block">
+        <img
+          class="comic-panel"
+          style="margin-bottom: 10px"
+          src="images/010.jpg"
+          alt="Viñeta Decisión"
+        />
+
+        <div class="decision-buttons">
+          <button class="btn-decision" onclick="goToRutaA()">
+            Quiero ser mejorada
+          </button>
+
+          <button class="btn-decision" onclick="goToRutaB()">
+            Prefiero seguir siendo humana
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // NAVEGACIÓN
+      function goToRutaA() {
+        // Fade out al body antes de irse
+        document.body.style.opacity = "0";
+        document.body.style.transition = "opacity 0.6s ease";
+        setTimeout(() => {
+          window.location.href = "rutaA.html";
+        }, 600);
+      }
+
+      function goToRutaB() {
+        document.body.style.opacity = "0";
+        document.body.style.transition = "opacity 0.6s ease";
+        setTimeout(() => {
+          window.location.href = "rutaB.html";
+        }, 600);
+      }
+
+      // ANIMACIÓN SCROLL (Intersection Observer)
+      document.addEventListener("DOMContentLoaded", function () {
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        const panels = document.querySelectorAll(
+          ".comic-panel, .decision-block"
+        );
+        panels.forEach((panel) => observer.observe(panel));
+      });
+    </script>
+  </body>
+</html>
