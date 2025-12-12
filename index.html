@@ -1,274 +1,376 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Barcelona Fake — Cómic Interactivo</title>
-
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap"
-      rel="stylesheet"
-    />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome 2225 — Cómic Interactivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
     <style>
-      /* -----------------------------------------------------------
-           1. CONFIGURACIÓN GENERAL Y VARIABLES (DARK MODE)
-        ----------------------------------------------------------- */
-      :root {
-        /* Paleta Oscura "Arcane" */
-        --color-bg: #101014; /* Negro casi puro */
-        --color-panel-bg: #1c1c24; /* Gris muy oscuro para placeholders */
-        --color-gold: #c8aa6e; /* Dorado un poco más apagado y elegante */
-        --color-text-main: #e0e0e0; /* Blanco roto para lectura cómoda */
-        --color-text-muted: #a0a0a0;
+        :root {
+            --color-bg: #0a0a0a;
+            --color-gold: #c8aa6e;
+            --color-text: #ffffff;
+            --font-main: 'Inter', sans-serif;
+            --panel-width: 1080px;
+        }
 
-        /* Tipografía única: Palo seco */
-        --font-main: "Inter", sans-serif;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-main);
+            line-height: 1.6;
+        }
 
-        --panel-width: 1080px;
-      }
+        header {
+            position: fixed;
+            top: 0; width: 100%; height: 70px;
+            background: #000;
+            display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid #333;
+            z-index: 1000;
+        }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        background-color: var(--color-bg);
-        color: var(--color-text-main);
-        font-family: var(--font-main);
-        line-height: 1.6;
-        overflow-x: hidden;
-      }
-
-      /* -----------------------------------------------------------
-           2. CABECERA (HEADER) - Estilo Dark Tech
-        ----------------------------------------------------------- */
-      header {
-        position: sticky;
-        top: 0;
-        width: 100%;
-        height: 100px;
-        background-color: rgba(
-          16,
-          16,
-          20,
-          0.9
-        ); /* Fondo oscuro semitransparente */
-        backdrop-filter: blur(10px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        border-bottom: 1px solid rgba(200, 170, 110, 0.3); /* Línea dorada sutil */
-      }
-
-      header h1 {
-        font-family: var(--font-main);
-        color: var(--color-text-main);
-        font-size: 1.5rem;
-        font-weight: 300; /* Letra fina para elegancia minimalista */
-        letter-spacing: 4px; /* Espaciado amplio estilo cinematográfico */
-        text-transform: uppercase;
-      }
-
-      /* -----------------------------------------------------------
-           3. CONTENEDOR PRINCIPAL
-        ----------------------------------------------------------- */
-      main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 40px 20px 80px 20px;
-        gap: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      /* -----------------------------------------------------------
-           4. ESTILOS DE VIÑETAS (.comic-panel)
-        ----------------------------------------------------------- */
-      .comic-panel {
-        width: var(--panel-width);
-        height: auto;
-        aspect-ratio: 1080 / 1920;
-        max-width: 100%;
-
-        display: block;
-        margin: 0 auto;
-        object-fit: cover;
-        border-radius: 8px;
-
-        /* Sombra oscura para integrarse en el fondo negro */
-        box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.05); /* Borde casi invisible */
-        background-color: var(--color-panel-bg); /* Color mientras carga */
-
-        /* Animación inicial */
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-      }
-
-      .comic-panel.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      /* -----------------------------------------------------------
-           5. BLOQUE DE DECISIÓN
-        ----------------------------------------------------------- */
-      .decision-block {
-        width: var(--panel-width);
-        max-width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        margin-top: 20px;
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-      }
-
-      .decision-block.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-
-      .decision-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-      }
-
-      .btn-decision {
-        font-family: var(--font-main);
-        font-weight: 700;
-        font-size: 1.1rem;
-        padding: 25px 40px;
-        width: 100%;
-
-        /* Estilo Dark Mode */
-        background-color: transparent;
-        color: var(--color-gold);
-        border: 1px solid var(--color-gold);
-
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-      }
-
-      /* Efecto Hover: Relleno dorado */
-      .btn-decision:hover {
-        background-color: var(--color-gold);
-        color: var(--color-bg); /* Texto se vuelve negro */
-        box-shadow: 0 0 25px rgba(200, 170, 110, 0.3);
-        transform: scale(1.01);
-        border-color: var(--color-gold);
-      }
-
-      /* Ajuste para móviles */
-      @media (max-width: 768px) {
         header h1 {
-          font-size: 1rem;
-          letter-spacing: 2px;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
         }
-        .btn-decision {
-          padding: 20px;
-          font-size: 0.9rem;
+
+        .btn-restart-header {
+            position: absolute;
+            right: 20px;
+            background: none;
+            border: 1px solid rgba(200, 170, 110, 0.5);
+            color: var(--color-gold);
+            padding: 8px 15px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 3px;
+            display: none;
         }
-      }
+
+        .container {
+            max-width: var(--panel-width);
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #intro-section {
+            padding: 100px 0;
+            text-align: center;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .intro-text {
+            max-width: 500px;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        #comic-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            margin-top: 60px;
+        }
+
+        .comic-panel {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        #decision-ui, #restart-ui {
+            margin: 40px 0;
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* ESTILO DEL CONTADOR */
+        #final-status-text {
+            text-align: center;
+            color: var(--color-gold);
+            margin-bottom: 25px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .countdown-timer {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: block;
+            margin-top: 10px;
+            text-shadow: 0 0 15px rgba(200, 170, 110, 0.5);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+
+        .btn {
+            background: none;
+            border: 1px solid var(--color-gold);
+            color: var(--color-gold);
+            padding: 20px;
+            font-family: var(--font-main);
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .btn:hover { background: var(--color-gold); color: #000; }
+
+        .hidden { display: none !important; }
+
+        footer {
+            width: 100%;
+            padding: 60px 20px;
+            margin-top: 40px;
+            border-top: 1px solid #222;
+            text-align: center;
+            background-color: #000;
+        }
+
+        .footer-content { max-width: var(--panel-width); margin: 0 auto; }
+        .footer-title { color: var(--color-gold); font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 10px; }
+        .footer-credits { color: #666; font-size: 0.8rem; font-weight: 300; letter-spacing: 1px; }
+        .footer-hidden { display: none; }
+
     </style>
-  </head>
-  <body>
+</head>
+<body>
+
     <header>
-      <h1>Barcelona Fake — Cómic Interactivo</h1>
+        <h1>Welcome 2225</h1>
+        <button id="header-restart-btn" class="btn-restart-header" onclick="ComicEngine.restartApp()">Reiniciar</button>
     </header>
 
-    <main>
-      <img src="images/001.jpg" class="comic-panel" alt="Página 1" />
-      <img src="images/002.jpg" class="comic-panel" alt="Página 2" />
-      <img src="images/003.jpg" class="comic-panel" alt="Página 3" />
-      <img src="images/004.jpg" class="comic-panel" alt="Página 3" />
-      <img src="images/005.jpg" class="comic-panel" alt="Página 3" />
-      <img src="images/006.jpg" class="comic-panel" alt="Página 3" />
-      <img src="images/007.jpg" class="comic-panel" alt="Página 3" />
-      <img src="images/008.jpg" class="comic-panel" alt="Página 3" />
-      <img src="images/009.jpg" class="comic-panel" alt="Página 3" />
+    <main class="container">
+        
+        <section id="intro-section">
+            <p class="intro-text">
+                Barcelona, 2025.<br>
+                Astrid busca una salida en una red de decisiones imposibles.<br>
+                Cada elección marcará su destino.
+            </p>
+            <button id="btn-start" class="btn" onclick="ComicEngine.init()">Iniciar Historia</button>
+        </section>
 
-      <div class="decision-block">
-        <img
-          class="comic-panel"
-          style="margin-bottom: 10px"
-          src="images/010.jpg"
-          alt="Viñeta Decisión"
-        />
+        <div id="comic-feed"></div>
 
-        <div class="decision-buttons">
-          <button class="btn-decision" onclick="goToRutaA()">
-            Quiero ser mejorada
-          </button>
+        <section id="decision-ui">
+            <button id="btn-opt-a" class="btn" onclick="ComicEngine.handleDecision('a')"></button>
+            <button id="btn-opt-b" class="btn" onclick="ComicEngine.handleDecision('b')"></button>
+        </section>
 
-          <button class="btn-decision" onclick="goToRutaB()">
-            Prefiero seguir siendo humana
-          </button>
-        </div>
-      </div>
+        <section id="restart-ui">
+            <p id="final-status-text"></p>
+            <button class="btn" onclick="ComicEngine.restartApp()">Volver a empezar</button>
+        </section>
+
     </main>
 
+    <footer id="app-footer" class="footer-hidden">
+        <div class="footer-content">
+            <div class="footer-title">Welcome 2225 — 2025</div>
+            <div class="footer-credits">
+                <p>Idea original <strong>Esther Lecina</strong></p>
+                <p>Asistencia en textos y creación de imágenes <strong>ChatGPT</strong></p>
+                <p>Asistencia en desarrollo y maquetación <strong>Gemini</strong></p>
+                <p>Asistencia en edición de imágenes <strong>Adobe Firefly</strong></p>
+                <p>Asistencia en edición de código <strong>Copilot</strong></p>
+            </div>
+        </div>
+    </footer>
+
     <script>
-      // NAVEGACIÓN
-      function goToRutaA() {
-        // Fade out al body antes de irse
-        document.body.style.opacity = "0";
-        document.body.style.transition = "opacity 0.6s ease";
-        setTimeout(() => {
-          window.location.href = "rutaA.html";
-        }, 600);
-      }
+        // CONFIGURACIÓN: Día y Hora de publicación (Formato ISO)
+        const NEXT_RELEASE_DATE = "2026-01-07T00:00:00";
 
-      function goToRutaB() {
-        document.body.style.opacity = "0";
-        document.body.style.transition = "opacity 0.6s ease";
-        setTimeout(() => {
-          window.location.href = "rutaB.html";
-        }, 600);
-      }
-
-      // ANIMACIÓN SCROLL (Intersection Observer)
-      document.addEventListener("DOMContentLoaded", function () {
-        const observerOptions = {
-          root: null,
-          rootMargin: "0px",
-          threshold: 0.1,
+        const STORY_DATA = {
+            "": { optionA: "Quiero ser mejorada", optionB: "Prefiero seguir siendo humana" },
         };
 
-        const observer = new IntersectionObserver((entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("visible");
-              observer.unobserve(entry.target);
-            }
-          });
-        }, observerOptions);
+        const ComicEngine = {
+            state: {
+                currentNumber: 1,
+                route: "" 
+            },
+            timerInterval: null, // Referencia para el intervalo
 
-        const panels = document.querySelectorAll(
-          ".comic-panel, .decision-block"
-        );
-        panels.forEach((panel) => observer.observe(panel));
-      });
+            ui: {
+                intro: document.getElementById('intro-section'),
+                btnStart: document.getElementById('btn-start'),
+                headerRestart: document.getElementById('header-restart-btn'),
+                feed: document.getElementById('comic-feed'),
+                decision: document.getElementById('decision-ui'),
+                restart: document.getElementById('restart-ui'),
+                finalText: document.getElementById('final-status-text'),
+                footer: document.getElementById('app-footer'),
+                btnA: document.getElementById('btn-opt-a'),
+                btnB: document.getElementById('btn-opt-b')
+            },
+
+            checkSavedProgress() {
+                const saved = localStorage.getItem('comic_save');
+                if (saved) {
+                    this.state = JSON.parse(saved);
+                    this.ui.btnStart.textContent = "Continuar Historia";
+                }
+            },
+
+            init() {
+                this.ui.intro.classList.add('hidden');
+                this.ui.footer.classList.remove('footer-hidden');
+                this.ui.headerRestart.style.display = 'block';
+                
+                if (this.state.route !== "" || this.state.currentNumber > 1) {
+                    this.reconstructStory();
+                } else {
+                    this.loadSequence();
+                }
+            },
+
+            async reconstructStory() {
+                const finalRoute = this.state.route;
+                this.state.currentNumber = 1;
+                this.state.route = "";
+                const pathsToLoad = ["", ...finalRoute.split("")];
+                let currentPathAccumulated = "";
+                for (let i = 0; i < pathsToLoad.length; i++) {
+                    if (i > 0) currentPathAccumulated += pathsToLoad[i];
+                    this.state.route = currentPathAccumulated;
+                    await this.tryNextImage(true); 
+                }
+            },
+
+            async loadSequence() {
+                this.ui.decision.style.display = 'none';
+                this.ui.restart.style.display = 'none';
+                if (this.timerInterval) clearInterval(this.timerInterval);
+                await this.tryNextImage(false);
+            },
+
+            async tryNextImage(isReconstructing) {
+                const imgNum = String(this.state.currentNumber).padStart(3, '0');
+                const imgPath = `images/${imgNum}${this.state.route}.jpg`;
+                const exists = await this.checkImage(imgPath);
+                if (exists) {
+                    this.renderPanel(imgPath);
+                    this.state.currentNumber++;
+                    await this.tryNextImage(isReconstructing);
+                } else {
+                    if (!isReconstructing) this.processNextStep();
+                }
+            },
+
+            processNextStep() {
+                const currentChoices = STORY_DATA[this.state.route];
+                if (currentChoices) {
+                    this.ui.btnA.textContent = currentChoices.optionA;
+                    this.ui.btnB.textContent = currentChoices.optionB;
+                    this.ui.decision.style.display = 'flex';
+                } else {
+                    this.startCountdown(); // Iniciar contador dinámico
+                    this.ui.restart.style.display = 'flex';
+                }
+            },
+
+            // LÓGICA DEL CONTADOR DINÁMICO
+            startCountdown() {
+                const target = new Date(NEXT_RELEASE_DATE).getTime();
+                
+                const update = () => {
+                    const now = new Date().getTime();
+                    const distance = target - now;
+
+                    if (distance < 0) {
+                        this.ui.finalText.innerHTML = "HAS LLEGADO AL FINAL DE ESTA RUTA";
+                        clearInterval(this.timerInterval);
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    this.ui.finalText.innerHTML = `
+                        PRÓXIMA ACTUALIZACIÓN EN:
+                        <span class="countdown-timer">
+                            ${days}d ${hours}h ${minutes}m ${seconds}s
+                        </span>
+                    `;
+                };
+
+                update(); // Ejecutar inmediatamente
+                this.timerInterval = setInterval(update, 1000);
+            },
+
+            checkImage(url) {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.src = url;
+                    img.onload = () => resolve(true);
+                    img.onerror = () => resolve(false);
+                });
+            },
+
+            renderPanel(url) {
+                const img = document.createElement('img');
+                img.src = url;
+                img.className = 'comic-panel';
+                this.ui.feed.appendChild(img);
+            },
+
+            handleDecision(choice) {
+                this.state.route += choice;
+                this.saveState();
+                this.loadSequence();
+            },
+
+            saveState() { localStorage.setItem('comic_save', JSON.stringify(this.state)); },
+
+            restartApp() {
+                if (confirm("¿Seguro que quieres reiniciar?")) {
+                    if (this.timerInterval) clearInterval(this.timerInterval);
+                    localStorage.removeItem('comic_save');
+                    this.state.currentNumber = 1;
+                    this.state.route = "";
+                    this.ui.feed.innerHTML = "";
+                    this.ui.restart.style.display = 'none';
+                    this.ui.decision.style.display = 'none';
+                    this.ui.headerRestart.style.display = 'none';
+                    this.ui.intro.classList.remove('hidden');
+                    this.ui.btnStart.textContent = "Iniciar Historia";
+                    window.scrollTo(0, 0);
+                }
+            }
+        };
+
+        window.onload = () => ComicEngine.checkSavedProgress();
     </script>
-  </body>
+</body>
 </html>
